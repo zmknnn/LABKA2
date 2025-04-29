@@ -237,6 +237,7 @@ public class NokoGUI extends JFrame {
         DefaultListModel<ProductGroup> groupsModel = new DefaultListModel<>();
 
         JList<ProductGroup> groupsList = new JList<>(groupsModel);
+        groupsList.setFont(new Font("Segoe UI", Font.PLAIN, 13));
         groupsList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
         groupsList.setBackground(new Color(255, 255, 255));
 
@@ -249,9 +250,10 @@ public class NokoGUI extends JFrame {
         groupsAreaPanel.add(groupsScrollPane);
 
         JTextArea groupsTextArea = new JTextArea(15, 20);
+        groupsTextArea.setFont(new Font("Segoe UI", Font.PLAIN, 14));
         groupsTextArea.setBackground(new Color(255, 255, 255));
         groupsTextArea.setEditable(false);
-        groupsTextArea.setFont(new Font("Segoe UI", Font.PLAIN, 14));
+
 
         groupsAreaPanel.add(groupsTextArea);
         groupsPanel.add(groupsAreaPanel);
@@ -442,6 +444,7 @@ public class NokoGUI extends JFrame {
         DefaultListModel<Product> productsModel = new DefaultListModel<>();
 
         JList<Product> productsList = new JList<>(productsModel);
+        productsList.setFont(new Font("Segoe UI", Font.PLAIN, 13));
         productsList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 
 
@@ -909,8 +912,8 @@ public class NokoGUI extends JFrame {
         statisticPanel.removeAll();
         statisticPanel.setLayout(new BorderLayout());
 
-        JLabel statisticHeader = new JLabel("СТАТИСТИКА");
-        statisticHeader.setFont(new Font("Arial", Font.BOLD, 16));
+        JLabel statisticHeader = new JLabel("Статистика");
+        statisticHeader.setFont(new Font("Arial", Font.BOLD, 18));
         JPanel headerPanel = new JPanel();
         headerPanel.add(statisticHeader);
         statisticPanel.add(headerPanel, BorderLayout.NORTH);
@@ -940,10 +943,12 @@ public class NokoGUI extends JFrame {
         statisticPanel.add(tabsPanel, BorderLayout.CENTER);
 
         JPanel tabContentPanel = new JPanel(new CardLayout());
-
         String[] columns = {"Назва", "Група", "Кількість", "Ціна", "Загальна вартість"};
 
+
+
         JTable allProductsTable = new JTable(new Object[0][columns.length], columns);
+        allProductsTable.setFont(new Font("Segoe UI", Font.PLAIN, 13));
         allProductsTable.setBackground(new Color(232, 243, 255));
         JScrollPane scrollAll = new JScrollPane(allProductsTable);
         JPanel allProductsPanel = new JPanel(new BorderLayout());
@@ -956,7 +961,9 @@ public class NokoGUI extends JFrame {
         JComboBox<String> group2ComboBox = new JComboBox<>();
         fillComboBoxWithGroups(group2ComboBox, groups);
 
+
         JTable groupTable = new JTable(new Object[0][columns.length], columns);
+        groupTable.setFont(new Font("Segoe UI", Font.PLAIN, 13));
         groupTable.setBackground(new Color(232, 243, 255));
         JScrollPane scrollGroup = new JScrollPane(groupTable);
         JLabel groupTotalLabel = new JLabel("Загальна вартість групи: 0");
@@ -1172,29 +1179,6 @@ public class NokoGUI extends JFrame {
         } catch (IOException e) {
             e.printStackTrace();
         }
-    }
-    private JButton createMenuButton(String text) {
-        JButton button = new JButton(text);
-        button.setBackground(new Color(180, 215, 255));
-        button.setForeground(new Color(33, 33, 33));
-        button.setOpaque(true);
-        button.setBorderPainted(false);
-        button.setAlignmentX(Component.CENTER_ALIGNMENT);
-        button.setMaximumSize(new Dimension(180, 40));
-        button.setFont(new Font("Segoe UI", Font.PLAIN, 14));
-        button.setFocusPainted(false);
-        return button;
-    }
-
-    private JButton createActionButton(String text) {
-        JButton button = new JButton(text);
-        button.setBackground(new Color(180, 215, 255));
-        button.setForeground(new Color(33, 33, 33));
-        button.setOpaque(true);
-        button.setBorderPainted(false);
-        button.setFont(new Font("Segoe UI", Font.PLAIN, 12));
-        button.setFocusPainted(false);
-        return button;
     }
 
 
