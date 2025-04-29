@@ -292,8 +292,7 @@ public class NokoGUI extends JFrame {
                 String newDescription = descriptionField.getText();
 
                 if (!newName.isEmpty() && !newDescription.isEmpty()) {
-                    selectedGroup.name = newName;
-                    selectedGroup.description = newDescription;
+                    noko.editProductGroup(selectedGroup, newName,newDescription);
 
                     groupsModel.setElementAt(selectedGroup, groupsList.getSelectedIndex());
 
@@ -303,6 +302,10 @@ public class NokoGUI extends JFrame {
                 }
             }
             groupsTextArea.setText(selectedGroup.display());
+            itemsGroupComboBox.removeAllItems();
+            fillComboBoxWithGroups(itemsGroupComboBox, groups);
+            importComboBox.removeAllItems();
+            fillComboBoxWithGroups(importComboBox, groups);
         });
 
         JButton groupsDeleteButton = new JButton("Видалити");
@@ -556,12 +559,9 @@ public class NokoGUI extends JFrame {
                         continue;
                     }
 
-                    // Оновлення товару
-                    selectedProduct.name = newName;
-                    selectedProduct.description = newDescription;
-                    selectedProduct.manufacturer = newManufacturer;
-                    selectedProduct.stockQuantity = newQuantity;
-                    selectedProduct.price = newPrice;
+                    String groupName = (String) itemsGroupComboBox.getSelectedItem();
+                    ProductGroup selectedGroup = findGroupByName(groupName, groups);
+                    selectedProduct.edit(selectedGroup, newName, newDescription, newManufacturer, newQuantity, newPrice);
 
                     itemsTextArea.setText(selectedProduct.display());
                     productsList.repaint();

@@ -58,6 +58,48 @@ public class Noko {
 
     }
 
+    public void editProductGroup(ProductGroup group, String newName, String newDescription) {
+        String oldName = group.name;
+        String oldFileName = oldName + ".txt";
+        String newFileName = newName + ".txt";
+
+        group.name = newName;
+        group.description = newDescription;
+
+        if (!oldName.equals(newName)) {
+            File oldFile = new File(oldFileName);
+            File newFile = new File(newFileName);
+            if (oldFile.exists()) {
+                oldFile.renameTo(newFile);
+            }
+        }
+
+        File groupsFile = new File("Групи.txt");
+        try {
+            List<String> lines = new ArrayList<>();
+            BufferedReader reader = new BufferedReader(new FileReader(groupsFile));
+            String line;
+            while ((line = reader.readLine()) != null) {
+                if (line.startsWith(oldName + ";")) {
+                    lines.add(group.fileToString());
+                } else {
+                    lines.add(line);
+                }
+            }
+            reader.close();
+
+            BufferedWriter writer = new BufferedWriter(new FileWriter(groupsFile));
+            for (String l : lines) {
+                writer.write(l);
+                writer.newLine();
+            }
+            writer.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+
     public static String findProductByNamePartial(String query) {
         boolean productFound = false;
         StringBuilder result = new StringBuilder("");
@@ -123,26 +165,6 @@ public class Noko {
             result.append("Товарів цього виробника не знайдено.");
         }
         return result.toString();
-    }
-
-    public void findProductByManufacturer(String manufacturerName) {
-        boolean productFound = false;
-        System.out.println("Знайдені товари:");
-        for (ProductGroup group : groups) {
-            for (Product product : group.products) {
-                if (product.manufacturer.equalsIgnoreCase(manufacturerName)) {
-                    System.out.println(product.name + " - " + product.description + "\n" +
-                            ", Виробник: " + product.manufacturer + "\n" +
-                            ", Кількість на складі: " + product.stockQuantity + "\n" +
-                            ", Ціна: " + product.price + "\n" + " ");
-                    productFound = true;
-                }
-            }
-        }
-        if (!productFound) {
-            System.out.println("Товарів цього виробника не знайдено.");
-        }
-
     }
 
     public void findProductByPrice(double price) {
@@ -228,10 +250,6 @@ class ProductGroup {
         }
     }
 
-    public void edit(String name, String description) {
-        this.name = name;
-        this.description = description;
-    }
 
     public String toString() {
         return name;
@@ -279,6 +297,40 @@ class Product {
     public String fileToString(){
         return name + ";" + description + ";" + manufacturer + ";" + stockQuantity + ";" + price ;
     }
+
+    public void edit(ProductGroup groupName, String newName, String newDescription, String newManufacturer, int newStockQuantity, double newPrice) {
+        String oldName = this.name;
+        this.name = newName;
+        this.description = newDescription;
+        this.manufacturer = newManufacturer;
+        this.stockQuantity = newStockQuantity;
+        this.price = newPrice;
+
+        File groupFile = new File(groupName + ".txt");
+        try {
+            List<String> lines = new ArrayList<>();
+            BufferedReader reader = new BufferedReader(new FileReader(groupFile));
+            String line;
+            while ((line = reader.readLine()) != null) {
+                if (line.startsWith(oldName + ";")) {
+                    lines.add(this.fileToString());
+                } else {
+                    lines.add(line);
+                }
+            }
+            reader.close();
+
+            BufferedWriter writer = new BufferedWriter(new FileWriter(groupFile));
+            for (String l : lines) {
+                writer.write(l);
+                writer.newLine();
+            }
+            writer.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
 }
 
 
