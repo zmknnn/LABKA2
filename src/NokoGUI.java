@@ -422,7 +422,7 @@ public class NokoGUI extends JFrame {
         itemsLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
         itemsPanel.add(itemsLabel);
 
-        JPanel itemsGroupPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
+        JPanel itemsGroupPanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
 
         JLabel selectItemsGroupLabel = new JLabel("Виберіть групу товарів : ");
 
