@@ -410,13 +410,14 @@ public class NokoGUI extends JFrame {
         itemsAddButton.addActionListener(e -> {
             boolean success = false;
 
-            while (!success) {
-                JTextField nameField = new JTextField();
-                JTextField descriptionField = new JTextField();
-                JTextField manufacturerField = new JTextField();
-                JTextField quantityField = new JTextField();
-                JTextField priceField = new JTextField();
+            // Зберігаємо введене між повторними спробами
+            JTextField nameField = new JTextField();
+            JTextField descriptionField = new JTextField();
+            JTextField manufacturerField = new JTextField();
+            JTextField quantityField = new JTextField();
+            JTextField priceField = new JTextField();
 
+            while (!success) {
                 JPanel panel = new JPanel(new GridLayout(0, 1));
                 panel.add(new JLabel("Назва товару:"));
                 panel.add(nameField);
@@ -443,31 +444,44 @@ public class NokoGUI extends JFrame {
 
                 try {
                     String name = nameField.getText().trim();
-                    if (!isNameUnique(name, groups)) {
-                        JOptionPane.showMessageDialog(null, "Така назва товару або групи уже існує!");
+                    String description = descriptionField.getText().trim();
+                    String manufacturer = manufacturerField.getText().trim();
+                    String quantityStr = quantityField.getText().trim();
+                    String priceStr = priceField.getText().trim();
+
+                    if (name.isEmpty() || description.isEmpty() || manufacturer.isEmpty() ||
+                            quantityStr.isEmpty() || priceStr.isEmpty()) {
+                        JOptionPane.showMessageDialog(null, "Будь ласка, заповніть усі поля.");
                         continue;
                     }
 
-                    String description = descriptionField.getText().trim();
-                    String manufacturer = manufacturerField.getText().trim();
-                    int quantity = Integer.parseInt(quantityField.getText().trim());
-                    double price = Double.parseDouble(priceField.getText().trim());
-
-                    if (!name.isEmpty() && !description.isEmpty() && !manufacturer.isEmpty() && quantity >= 0 && price >= 0) {
-                        String groupName = (String) itemsGroupComboBox.getSelectedItem();
-                        ProductGroup selectedGroup = findGroupByName(groupName, groups);
-
-                        if (selectedGroup != null) {
-                            Product newProduct = new Product(name, description, manufacturer, quantity, price);
-                            selectedGroup.addProduct(newProduct);
-                            productsModel.addElement(newProduct);
-
-                            JOptionPane.showMessageDialog(null, "Товар успішно додано!");
-                            success = true; // завершити цикл
-                        }
-                    } else {
-                        JOptionPane.showMessageDialog(null, "Будь ласка, заповніть усі поля коректно.");
+                    if (!isNameUnique(name, groups)) {
+                        JOptionPane.showMessageDialog(null, "Така назва товару або групи вже існує.");
+                        continue;
                     }
+
+                    int quantity = Integer.parseInt(quantityStr);
+                    double price = Double.parseDouble(priceStr);
+
+                    if (quantity < 0 || price < 0) {
+                        JOptionPane.showMessageDialog(null, "Кількість та ціна не можуть бути від’ємними.");
+                        continue;
+                    }
+
+                    String groupName = (String) itemsGroupComboBox.getSelectedItem();
+                    ProductGroup selectedGroup = findGroupByName(groupName, groups);
+
+                    if (selectedGroup != null) {
+                        Product newProduct = new Product(name, description, manufacturer, quantity, price);
+                        selectedGroup.addProduct(newProduct);
+                        productsModel.addElement(newProduct);
+
+                        JOptionPane.showMessageDialog(null, "Товар успішно додано!");
+                        success = true;
+                    } else {
+                        JOptionPane.showMessageDialog(null, "Групу не знайдено.");
+                    }
+
                 } catch (NumberFormatException ex) {
                     JOptionPane.showMessageDialog(null, "Кількість та ціна мають бути числовими значеннями.");
                 }
@@ -490,48 +504,72 @@ public class NokoGUI extends JFrame {
             JTextField quantityField = new JTextField(String.valueOf(selectedProduct.stockQuantity));
             JTextField priceField = new JTextField(String.valueOf(selectedProduct.price));
 
-            JPanel panel = new JPanel(new GridLayout(0, 1));
-            panel.add(new JLabel("Назва товару:"));
-            panel.add(nameField);
-            panel.add(new JLabel("Опис товару:"));
-            panel.add(descriptionField);
-            panel.add(new JLabel("Виробник:"));
-            panel.add(manufacturerField);
-            panel.add(new JLabel("Кількість:"));
-            panel.add(quantityField);
-            panel.add(new JLabel("Ціна:"));
-            panel.add(priceField);
+            boolean success = false;
 
-            int result = JOptionPane.showConfirmDialog(
-                    null,
-                    panel,
-                    "Редагувати товар",
-                    JOptionPane.OK_CANCEL_OPTION,
-                    JOptionPane.PLAIN_MESSAGE
-            );
+            while (!success) {
+                JPanel panel = new JPanel(new GridLayout(0, 1));
+                panel.add(new JLabel("Назва товару:"));
+                panel.add(nameField);
+                panel.add(new JLabel("Опис товару:"));
+                panel.add(descriptionField);
+                panel.add(new JLabel("Виробник:"));
+                panel.add(manufacturerField);
+                panel.add(new JLabel("Кількість:"));
+                panel.add(quantityField);
+                panel.add(new JLabel("Ціна:"));
+                panel.add(priceField);
 
-            if (result == JOptionPane.OK_OPTION) {
+                int result = JOptionPane.showConfirmDialog(
+                        null,
+                        panel,
+                        "Редагувати товар",
+                        JOptionPane.OK_CANCEL_OPTION,
+                        JOptionPane.PLAIN_MESSAGE
+                );
+
+                if (result != JOptionPane.OK_OPTION) {
+                    break;
+                }
+
                 try {
-                    String newName = nameField.getText();
-                    String newDescription = descriptionField.getText();
-                    String newManufacturer = manufacturerField.getText();
-                    int newQuantity = Integer.parseInt(quantityField.getText());
-                    double newPrice = Double.parseDouble(priceField.getText());
+                    String newName = nameField.getText().trim();
+                    String newDescription = descriptionField.getText().trim();
+                    String newManufacturer = manufacturerField.getText().trim();
+                    String quantityStr = quantityField.getText().trim();
+                    String priceStr = priceField.getText().trim();
 
-                    if (!newName.isEmpty() && !newDescription.isEmpty() && !newManufacturer.isEmpty() && newQuantity >= 0 && newPrice >= 0) {
-                        selectedProduct.name = newName;
-                        selectedProduct.description = newDescription;
-                        selectedProduct.manufacturer = newManufacturer;
-                        selectedProduct.stockQuantity = newQuantity;
-                        selectedProduct.price = newPrice;
-
-                        itemsTextArea.setText(selectedProduct.display());
-                        productsList.repaint();
-
-                        JOptionPane.showMessageDialog(null, "Товар успішно відредаговано!");
-                    } else {
-                        JOptionPane.showMessageDialog(null, "Будь ласка, заповніть усі поля коректно.");
+                    if (newName.isEmpty() || newDescription.isEmpty() || newManufacturer.isEmpty() ||
+                            quantityStr.isEmpty() || priceStr.isEmpty()) {
+                        JOptionPane.showMessageDialog(null, "Будь ласка, заповніть усі поля.");
+                        continue;
                     }
+
+                    if (!newName.equalsIgnoreCase(selectedProduct.name) && !isNameUnique(newName, groups)) {
+                        JOptionPane.showMessageDialog(null, "Така назва товару або групи вже існує.");
+                        continue;
+                    }
+
+                    int newQuantity = Integer.parseInt(quantityStr);
+                    double newPrice = Double.parseDouble(priceStr);
+
+                    if (newQuantity < 0 || newPrice < 0) {
+                        JOptionPane.showMessageDialog(null, "Кількість і ціна не можуть бути від’ємними.");
+                        continue;
+                    }
+
+                    // Оновлення товару
+                    selectedProduct.name = newName;
+                    selectedProduct.description = newDescription;
+                    selectedProduct.manufacturer = newManufacturer;
+                    selectedProduct.stockQuantity = newQuantity;
+                    selectedProduct.price = newPrice;
+
+                    itemsTextArea.setText(selectedProduct.display());
+                    productsList.repaint();
+
+                    JOptionPane.showMessageDialog(null, "Товар успішно відредаговано!");
+                    success = true;
+
                 } catch (NumberFormatException ex) {
                     JOptionPane.showMessageDialog(null, "Кількість та ціна мають бути числовими значеннями.");
                 }
