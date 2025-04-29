@@ -51,7 +51,16 @@ public class NokoGUI extends JFrame {
 
     }
 
+
     public NokoGUI() {
+        try {
+            UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
+            UIManager.put("Panel.background", new Color(232, 243, 255));
+            UIManager.put("OptionPane.background", new Color(232, 243, 255));
+            UIManager.put("OptionPane.messageForeground", new Color(44, 62, 80));
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
 
         groups = new ArrayList<ProductGroup>();
         noko = new Noko(groups);
@@ -61,6 +70,7 @@ public class NokoGUI extends JFrame {
             loadProductsFromFile(groupFileName, group);
         }
 
+
         this.setTitle("Noko - склад товарів");
         setSize(800, 650);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -68,7 +78,7 @@ public class NokoGUI extends JFrame {
 
         menuPanel = new JPanel();
         menuPanel.setLayout(new BoxLayout(menuPanel, BoxLayout.Y_AXIS));
-        menuPanel.setBackground(new Color(230, 230, 250));
+        menuPanel.setBackground(new Color(198, 221, 255));
         menuPanel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
 
         menuLabel = new JLabel("Меню");
@@ -79,11 +89,36 @@ public class NokoGUI extends JFrame {
         // Метод для додавання пустого простору між елементами
         menuPanel.add(Box.createRigidArea(new Dimension(0, 20)));
 
-        JButton searchBtn = new JButton("               Пошук                  ");
+        JButton searchBtn = new JButton("              Пошук                 ");
+        searchBtn.setBackground(new Color(160, 197, 248));
+        searchBtn.setForeground(new Color(33, 33, 33));
+        searchBtn.setOpaque(true);
+        searchBtn.setBorderPainted(false);
+        searchBtn.setFont(new Font("Segoe UI", Font.PLAIN, 14));
         JButton groupsBtn = new JButton("         Групи товарів          ");
+        groupsBtn.setBackground(new Color(160, 197, 248));
+        groupsBtn.setForeground(new Color(33, 33, 33));
+        groupsBtn.setOpaque(true);
+        groupsBtn.setBorderPainted(false);
+        groupsBtn.setFont(new Font("Segoe UI", Font.PLAIN, 14));
         JButton itemsBtn = new JButton("               Товари                ");
-        JButton importBtn = new JButton("Надходження/Списання");
+        itemsBtn.setBackground(new Color(160, 197, 248));
+        itemsBtn.setForeground(new Color(33, 33, 33));
+        itemsBtn.setOpaque(true);
+        itemsBtn.setBorderPainted(false);
+        itemsBtn.setFont(new Font("Segoe UI", Font.PLAIN, 14));
+        JButton importBtn = new JButton("  Надходження/Списання  ");
+        importBtn.setBackground(new Color(160, 197, 248));
+        importBtn.setForeground(new Color(33, 33, 33));
+        importBtn.setOpaque(true);
+        importBtn.setBorderPainted(false);
+        importBtn.setFont(new Font("Segoe UI", Font.PLAIN, 14));
         JButton statisticBtn = new JButton("            Статистика             ");
+        statisticBtn.setBackground(new Color(160, 197, 248));
+        statisticBtn.setForeground(new Color(33, 33, 33));
+        statisticBtn.setOpaque(true);
+        statisticBtn.setBorderPainted(false);
+        statisticBtn.setFont(new Font("Segoe UI", Font.PLAIN, 14));
 
         // Розміщення кнопок по центру їхнього JPanel
         searchBtn.setAlignmentX(Component.CENTER_ALIGNMENT);
@@ -114,8 +149,13 @@ public class NokoGUI extends JFrame {
 
         // Верхня частина вкладки пошуку
         JPanel textSearchPanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
+
         search = new JTextField(40);
         searchButton = new JButton("\uD83D\uDD0D");
+        searchButton.setBackground(new Color(191, 214, 246));
+        searchButton.setForeground(new Color(33, 33, 33));
+        searchButton.setOpaque(true);
+        searchButton.setBorderPainted(false);
         textSearchPanel.add(search);
         textSearchPanel.add(searchButton);
         searchPanel.add(textSearchPanel);
@@ -124,7 +164,15 @@ public class NokoGUI extends JFrame {
         JLabel filterLabel = new JLabel("Шукати за:");
 
         JRadioButton nameBtn = new JRadioButton("Назва");
+        nameBtn.setBackground(new Color(232, 243, 255));
+        nameBtn.setForeground(new Color(33, 33, 33));
+        nameBtn.setOpaque(true);
+        nameBtn.setBorderPainted(false);
         JRadioButton manufacturerBtn = new JRadioButton("Виробник");
+        manufacturerBtn.setBackground(new Color(232, 243, 255));
+        manufacturerBtn.setForeground(new Color(33, 33, 33));
+        manufacturerBtn.setOpaque(true);
+        manufacturerBtn.setBorderPainted(false);
 
         ButtonGroup group = new ButtonGroup();
         group.add(nameBtn);
@@ -137,6 +185,7 @@ public class NokoGUI extends JFrame {
         searchPanel.add(filterPanel);
 
         JTextArea searchResultsArea = new JTextArea(7, 50);
+        searchResultsArea.setBackground(new Color(232, 243, 255));
         searchResultsArea.setEditable(false);
         searchResultsArea.setLineWrap(true);
         searchResultsArea.setWrapStyleWord(true);
@@ -189,6 +238,7 @@ public class NokoGUI extends JFrame {
 
         JList<ProductGroup> groupsList = new JList<>(groupsModel);
         groupsList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+        groupsList.setBackground(new Color(255, 255, 255));
 
         for (ProductGroup groupр : groups) {
             groupsModel.addElement(groupр);
@@ -199,6 +249,7 @@ public class NokoGUI extends JFrame {
         groupsAreaPanel.add(groupsScrollPane);
 
         JTextArea groupsTextArea = new JTextArea(15, 20);
+        groupsTextArea.setBackground(new Color(255, 255, 255));
         groupsTextArea.setEditable(false);
         groupsTextArea.setFont(new Font("Segoe UI", Font.PLAIN, 14));
 
@@ -218,6 +269,12 @@ public class NokoGUI extends JFrame {
 
         JPanel groupsButtonPanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
         JButton groupsAddButton = new JButton("Додати");
+        groupsAddButton.setBackground(new Color(191, 214, 246));
+        groupsAddButton.setForeground(new Color(33, 33, 33));
+        groupsAddButton.setOpaque(true);
+        groupsAddButton.setBorderPainted(false);
+        groupsAddButton.setFont(new Font("Segoe UI", Font.PLAIN, 12));
+
 
         groupsAddButton.addActionListener(e -> {
             JTextField nameField = new JTextField();
@@ -261,6 +318,11 @@ public class NokoGUI extends JFrame {
         });
 
         JButton groupsEditButton = new JButton("Редагувати");
+        groupsEditButton.setBackground(new Color(191, 214, 246));
+        groupsEditButton.setForeground(new Color(33, 33, 33));
+        groupsEditButton.setOpaque(true);
+        groupsEditButton.setBorderPainted(false);
+        groupsEditButton.setFont(new Font("Segoe UI", Font.PLAIN, 12));
 
         groupsEditButton.addActionListener(e -> {
             ProductGroup selectedGroup = groupsList.getSelectedValue();
@@ -309,6 +371,11 @@ public class NokoGUI extends JFrame {
         });
 
         JButton groupsDeleteButton = new JButton("Видалити");
+        groupsDeleteButton.setBackground(new Color(191, 214, 246));
+        groupsDeleteButton.setForeground(new Color(33, 33, 33));
+        groupsDeleteButton.setOpaque(true);
+        groupsDeleteButton.setBorderPainted(false);
+        groupsDeleteButton.setFont(new Font("Segoe UI", Font.PLAIN, 12));
 
         groupsDeleteButton.addActionListener(e -> {
             ProductGroup selectedGroup = groupsList.getSelectedValue();
@@ -360,6 +427,8 @@ public class NokoGUI extends JFrame {
         JLabel selectItemsGroupLabel = new JLabel("Виберіть групу товарів : ");
 
         itemsGroupComboBox = new JComboBox<>();
+
+
         fillComboBoxWithGroups(itemsGroupComboBox, groups);
 
         itemsGroupPanel.add(selectItemsGroupLabel);
@@ -375,7 +444,9 @@ public class NokoGUI extends JFrame {
         JList<Product> productsList = new JList<>(productsModel);
         productsList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 
+
         JScrollPane scrollPane = new JScrollPane(productsList);
+
         scrollPane.setPreferredSize(new Dimension(275, 300));
         itemsProductPanel.add(scrollPane);
 
@@ -408,6 +479,11 @@ public class NokoGUI extends JFrame {
 
         JPanel itemsButtonPanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
         JButton itemsAddButton = new JButton("Додати");
+        itemsAddButton.setBackground(new Color(191, 214, 246));
+        itemsAddButton.setForeground(new Color(33, 33, 33));
+        itemsAddButton.setOpaque(true);
+        itemsAddButton.setBorderPainted(false);
+        itemsAddButton.setFont(new Font("Segoe UI", Font.PLAIN, 12));
 
         itemsAddButton.addActionListener(e -> {
             boolean success = false;
@@ -491,6 +567,11 @@ public class NokoGUI extends JFrame {
         });
 
         JButton itemsEditButton = new JButton("Редагувати");
+        itemsEditButton.setBackground(new Color(191, 214, 246));
+        itemsEditButton.setForeground(new Color(33, 33, 33));
+        itemsEditButton.setOpaque(true);
+        itemsEditButton.setBorderPainted(false);
+        itemsEditButton.setFont(new Font("Segoe UI", Font.PLAIN, 12));
 
         itemsEditButton.addActionListener(e -> {
             Product selectedProduct = productsList.getSelectedValue();
@@ -576,6 +657,11 @@ public class NokoGUI extends JFrame {
         });
 
         JButton itemsDeleteButton = new JButton("Видалити");
+        itemsDeleteButton.setBackground(new Color(191, 214, 246));
+        itemsDeleteButton.setForeground(new Color(33, 33, 33));
+        itemsDeleteButton.setOpaque(true);
+        itemsDeleteButton.setBorderPainted(false);
+        itemsDeleteButton.setFont(new Font("Segoe UI", Font.PLAIN, 12));
 
         itemsDeleteButton.addActionListener(e -> {
             Product selectedProduct = productsList.getSelectedValue();
@@ -686,6 +772,11 @@ public class NokoGUI extends JFrame {
 
         JPanel choice3Panel = new JPanel(new FlowLayout(FlowLayout.CENTER));
         JButton writeInButton = new JButton("Додати");
+        writeInButton.setBackground(new Color(191, 214, 246));
+        writeInButton.setForeground(new Color(33, 33, 33));
+        writeInButton.setOpaque(true);
+        writeInButton.setBorderPainted(false);
+        writeInButton.setFont(new Font("Segoe UI", Font.PLAIN, 12));
 
         writeInButton.addActionListener(e -> {
             String productName = (String) importProductComboBox.getSelectedItem();
@@ -737,6 +828,11 @@ public class NokoGUI extends JFrame {
 
         choice3Panel.add(writeInButton);
         JButton writeOffButton = new JButton("Списати");
+        writeOffButton.setBackground(new Color(191, 214, 246));
+        writeOffButton.setForeground(new Color(33, 33, 33));
+        writeOffButton.setOpaque(true);
+        writeOffButton.setBorderPainted(false);
+        writeOffButton.setFont(new Font("Segoe UI", Font.PLAIN, 12));
 
         writeOffButton.addActionListener(e -> {
 
@@ -807,6 +903,7 @@ public class NokoGUI extends JFrame {
         /** Вкладка для статистики */
         JPanel statisticPanel = new JPanel();
         statisticPanel.add(new JLabel("Статистика"));
+        statisticPanel.setBackground(new Color(183, 226, 252));
 
         // --- Статистика ---
         statisticPanel.removeAll();
@@ -820,8 +917,23 @@ public class NokoGUI extends JFrame {
 
         JPanel tabsPanel = new JPanel(new FlowLayout(FlowLayout.CENTER, 20, 5));
         JButton allProductsBtn = new JButton("Вся продукція");
+        allProductsBtn.setBackground(new Color(191, 214, 246));
+        allProductsBtn.setForeground(new Color(33, 33, 33));
+        allProductsBtn.setOpaque(true);
+        allProductsBtn.setBorderPainted(false);
+        allProductsBtn.setFont(new Font("Segoe UI", Font.PLAIN, 12));
         JButton byGroupsBtn = new JButton("По групах");
+        byGroupsBtn.setBackground(new Color(191, 214, 246));
+        byGroupsBtn.setForeground(new Color(33, 33, 33));
+        byGroupsBtn.setOpaque(true);
+        byGroupsBtn.setBorderPainted(false);
+        byGroupsBtn.setFont(new Font("Segoe UI", Font.PLAIN, 12));
         JButton totalValueBtn = new JButton("Загальна вартість складу");
+        totalValueBtn.setBackground(new Color(191, 214, 246));
+        totalValueBtn.setForeground(new Color(33, 33, 33));
+        totalValueBtn.setOpaque(true);
+        totalValueBtn.setBorderPainted(false);
+        totalValueBtn.setFont(new Font("Segoe UI", Font.PLAIN, 12));
         tabsPanel.add(allProductsBtn);
         tabsPanel.add(byGroupsBtn);
         tabsPanel.add(totalValueBtn);
@@ -832,8 +944,10 @@ public class NokoGUI extends JFrame {
         String[] columns = {"Назва", "Група", "Кількість", "Ціна", "Загальна вартість"};
 
         JTable allProductsTable = new JTable(new Object[0][columns.length], columns);
+        allProductsTable.setBackground(new Color(232, 243, 255));
         JScrollPane scrollAll = new JScrollPane(allProductsTable);
         JPanel allProductsPanel = new JPanel(new BorderLayout());
+
         allProductsPanel.setBorder(BorderFactory.createTitledBorder("Вся продукція"));
         allProductsPanel.add(scrollAll, BorderLayout.CENTER);
 
@@ -843,6 +957,7 @@ public class NokoGUI extends JFrame {
         fillComboBoxWithGroups(group2ComboBox, groups);
 
         JTable groupTable = new JTable(new Object[0][columns.length], columns);
+        groupTable.setBackground(new Color(232, 243, 255));
         JScrollPane scrollGroup = new JScrollPane(groupTable);
         JLabel groupTotalLabel = new JLabel("Загальна вартість групи: 0");
 
@@ -1057,6 +1172,29 @@ public class NokoGUI extends JFrame {
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+    private JButton createMenuButton(String text) {
+        JButton button = new JButton(text);
+        button.setBackground(new Color(180, 215, 255));
+        button.setForeground(new Color(33, 33, 33));
+        button.setOpaque(true);
+        button.setBorderPainted(false);
+        button.setAlignmentX(Component.CENTER_ALIGNMENT);
+        button.setMaximumSize(new Dimension(180, 40));
+        button.setFont(new Font("Segoe UI", Font.PLAIN, 14));
+        button.setFocusPainted(false);
+        return button;
+    }
+
+    private JButton createActionButton(String text) {
+        JButton button = new JButton(text);
+        button.setBackground(new Color(180, 215, 255));
+        button.setForeground(new Color(33, 33, 33));
+        button.setOpaque(true);
+        button.setBorderPainted(false);
+        button.setFont(new Font("Segoe UI", Font.PLAIN, 12));
+        button.setFocusPainted(false);
+        return button;
     }
 
 
