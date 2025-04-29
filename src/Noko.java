@@ -179,7 +179,7 @@ class ProductGroup {
     }
 
     public String fileToString(){
-        return name + ";" + description + "\n";
+        return name + ";" + description;
     }
 
 
@@ -277,7 +277,7 @@ class Product {
         return stockQuantity;
     }
     public String fileToString(){
-        return name + ";" + description + ";" + manufacturer + ";" + stockQuantity + ";" + price + "\n";
+        return name + ";" + description + ";" + manufacturer + ";" + stockQuantity + ";" + price ;
     }
 }
 

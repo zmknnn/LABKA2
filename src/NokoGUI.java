@@ -125,7 +125,6 @@ public class NokoGUI extends JFrame {
 
         JRadioButton nameBtn = new JRadioButton("Назва");
         JRadioButton manufacturerBtn = new JRadioButton("Виробник");
-        //JRadioButton priceBtn = new JRadioButton("Ціна");
 
         ButtonGroup group = new ButtonGroup();
         group.add(nameBtn);
