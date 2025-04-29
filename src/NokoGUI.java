@@ -717,6 +717,7 @@ public class NokoGUI extends JFrame {
         JPanel choice1Panel = new JPanel(new FlowLayout(FlowLayout.CENTER));
 
         JLabel selectImportLabel = new JLabel("Виберіть групу товарів : ");
+        selectImportLabel.setFont(new Font("Segoe UI", Font.PLAIN, 11));
 
         importComboBox = new JComboBox<>();
         fillComboBoxWithGroups(importComboBox, groups);
@@ -730,6 +731,7 @@ public class NokoGUI extends JFrame {
         importProductComboBox = new JComboBox<>();
 
         JPanel choice2Panel = new JPanel(new FlowLayout(FlowLayout.CENTER));
+        choice2Panel.setFont(new Font("Segoe UI", Font.PLAIN, 11));
         choice2Panel.add(new JLabel("Виберіть товар: "));
         choice2Panel.add(importProductComboBox);
 
@@ -796,6 +798,7 @@ public class NokoGUI extends JFrame {
 
             JTextField quantityWriteInField = new JTextField(5);
             JLabel label = new JLabel("Введіть кількість для надходження:");
+
 
             inputPanel.add(label);
             inputPanel.add(quantityWriteInField);
@@ -948,7 +951,7 @@ public class NokoGUI extends JFrame {
 
 
         JTable allProductsTable = new JTable(new Object[0][columns.length], columns);
-        allProductsTable.setFont(new Font("Segoe UI", Font.PLAIN, 13));
+
         allProductsTable.setBackground(new Color(232, 243, 255));
         JScrollPane scrollAll = new JScrollPane(allProductsTable);
         JPanel allProductsPanel = new JPanel(new BorderLayout());
@@ -963,7 +966,6 @@ public class NokoGUI extends JFrame {
 
 
         JTable groupTable = new JTable(new Object[0][columns.length], columns);
-        groupTable.setFont(new Font("Segoe UI", Font.PLAIN, 13));
         groupTable.setBackground(new Color(232, 243, 255));
         JScrollPane scrollGroup = new JScrollPane(groupTable);
         JLabel groupTotalLabel = new JLabel("Загальна вартість групи: 0");
