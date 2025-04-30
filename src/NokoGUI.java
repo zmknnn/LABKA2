@@ -7,7 +7,7 @@ import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
 
-/** */
+/** Програма з графічним інтерфейсом */
 
 public class NokoGUI extends JFrame {
     private JTextField search;
@@ -21,7 +21,6 @@ public class NokoGUI extends JFrame {
     static Noko noko;
     static ArrayList<ProductGroup> groups;
 
-    /** */
     public NokoGUI() {
         try {
             UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());

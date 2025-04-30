@@ -20,7 +20,8 @@ public class Noko {
         this.groups = groups;
     }
 
-    /** Метод для додання групи товарів */
+    /** Метод для додання групи товарів
+     * @param newGroup нова група */
     public void addProductGroup(ProductGroup newGroup) {
         for (ProductGroup group : groups) {
             if (group.name.equalsIgnoreCase(newGroup.name)) {
@@ -47,7 +48,8 @@ public class Noko {
         }
     }
 
-    /** Метод для видалення групи товарів */
+    /** Метод для видалення групи товарів
+     * @param group група для видалення */
     public void deleteProductGroup(ProductGroup group) {
         if (groups.remove(group)) {
             group.clearProducts();
@@ -77,7 +79,10 @@ public class Noko {
         }
     }
 
-    /** Метод для редагування товарів */
+    /** Метод для редагування товарів
+     * @param group група для редагування
+     * @param newName нова назва
+     * @param newDescription новий опис */
     public void editProductGroup(ProductGroup group, String newName, String newDescription) {
         String oldName = group.name;
         String oldFileName = oldName + ".txt";
@@ -119,7 +124,8 @@ public class Noko {
         }
     }
 
-    /** Метод для знаходження товару за назвою (початком) */
+    /** Метод для знаходження товару за назвою (початком)
+     * @param query рядок початку */
     public static String findProductByNamePartial(String query) {
         boolean productFound = false;
         StringBuilder result = new StringBuilder("");
@@ -153,7 +159,8 @@ public class Noko {
         return result.toString();
     }
 
-    /** Метод для знаходження товару за виробником (початком) */
+    /** Метод для знаходження товару за виробником (початком)
+     * @param query рядок початку */
     public static String findProductByManufacturerPartial(String query) {
         boolean productFound = false;
         StringBuilder result = new StringBuilder("");
