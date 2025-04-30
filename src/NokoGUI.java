@@ -572,6 +572,7 @@ public class NokoGUI extends JFrame {
         itemsEditButton.setBorderPainted(false);
         itemsEditButton.setFont(new Font("Segoe UI", Font.PLAIN, 12));
 
+        /** Подія від натискання кнопки "Редагувати" */
         itemsEditButton.addActionListener(e -> {
             Product selectedProduct = productsList.getSelectedValue();
 
@@ -662,6 +663,7 @@ public class NokoGUI extends JFrame {
         itemsDeleteButton.setBorderPainted(false);
         itemsDeleteButton.setFont(new Font("Segoe UI", Font.PLAIN, 12));
 
+        /** Подія від натискання кнопки "Видалити" */
         itemsDeleteButton.addActionListener(e -> {
             Product selectedProduct = productsList.getSelectedValue();
 
@@ -697,7 +699,6 @@ public class NokoGUI extends JFrame {
         itemsButtonPanel.add(itemsAddButton);
         itemsButtonPanel.add(itemsEditButton);
         itemsButtonPanel.add(itemsDeleteButton);
-
         itemsPanel.add(itemsButtonPanel);
 
 
@@ -720,7 +721,6 @@ public class NokoGUI extends JFrame {
 
         choice1Panel.add(selectImportLabel);
         choice1Panel.add(importComboBox);
-
         importPanel.add(Box.createRigidArea(new Dimension(0, 10)));
         importPanel.add(choice1Panel);
 
@@ -731,6 +731,7 @@ public class NokoGUI extends JFrame {
         choice2Panel.add(new JLabel("Виберіть товар: "));
         choice2Panel.add(importProductComboBox);
 
+        /** Подія від вибору елементу в комбобоксі груп */
         importComboBox.addActionListener(e -> {
             String groupName = (String) importComboBox.getSelectedItem();
             ProductGroup selectedGroup = findGroupByName(groupName, groups);
@@ -748,6 +749,7 @@ public class NokoGUI extends JFrame {
 
         importPanel.add(choice2Panel);
 
+        // Панель для виводу інформації про обраний товар
         JPanel informationPanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
         JTextArea informationArea = new JTextArea(28, 35);
         informationArea.setEditable(false);
@@ -756,6 +758,7 @@ public class NokoGUI extends JFrame {
         informationPanel.add(informationArea);
         importPanel.add(informationPanel);
 
+        /** Подія від вибору елементу в комбобоксі товарів */
         importProductComboBox.addActionListener(e -> {
             String productName = (String) importProductComboBox.getSelectedItem();
             String groupName = (String) importComboBox.getSelectedItem();
@@ -779,6 +782,7 @@ public class NokoGUI extends JFrame {
         writeInButton.setBorderPainted(false);
         writeInButton.setFont(new Font("Segoe UI", Font.PLAIN, 12));
 
+        /** Подія від натискання кнопки "Додати" */
         writeInButton.addActionListener(e -> {
             String productName = (String) importProductComboBox.getSelectedItem();
             String groupName = (String) importComboBox.getSelectedItem();
@@ -794,7 +798,6 @@ public class NokoGUI extends JFrame {
 
             JTextField quantityWriteInField = new JTextField(5);
             JLabel label = new JLabel("Введіть кількість для надходження:");
-
 
             inputPanel.add(label);
             inputPanel.add(quantityWriteInField);
@@ -817,7 +820,7 @@ public class NokoGUI extends JFrame {
                     int quantity = Integer.parseInt(quantityWriteInField.getText());
                     if (quantity > 0) {
                         selectedProduct.writeIn(quantity);
-                        JOptionPane.showMessageDialog(null, "Товар успішно додано!");
+                        JOptionPane.showMessageDialog(null, "Товар успішно надійшов на склад!");
                         informationArea.setText(selectedProduct.display());
                     } else {
                         JOptionPane.showMessageDialog(null, "Кількість має бути більшою за нуль.");
@@ -836,8 +839,8 @@ public class NokoGUI extends JFrame {
         writeOffButton.setBorderPainted(false);
         writeOffButton.setFont(new Font("Segoe UI", Font.PLAIN, 12));
 
+        /** Подія від натискання кнопки "Списати" */
         writeOffButton.addActionListener(e -> {
-
             String productName = (String) importProductComboBox.getSelectedItem();
             String groupName = (String) importComboBox.getSelectedItem();
             ProductGroup selectedGroup = findGroupByName(groupName, groups);
@@ -893,12 +896,10 @@ public class NokoGUI extends JFrame {
                 int selectedValue = writeOffSlider.getValue();
                 selectedProduct.writeOff(selectedValue);
             }
-
             informationArea.setText(selectedProduct.display());
         });
 
         choice3Panel.add(writeOffButton);
-
         importPanel.add(choice3Panel);
 
 
@@ -906,8 +907,6 @@ public class NokoGUI extends JFrame {
         JPanel statisticPanel = new JPanel();
         statisticPanel.add(new JLabel("Статистика"));
         statisticPanel.setBackground(new Color(183, 226, 252));
-
-        // --- Статистика ---
         statisticPanel.removeAll();
         statisticPanel.setLayout(new BorderLayout());
 
@@ -944,10 +943,8 @@ public class NokoGUI extends JFrame {
         JPanel tabContentPanel = new JPanel(new CardLayout());
         String[] columns = {"Назва", "Група", "Кількість", "Ціна", "Загальна вартість"};
 
-
-
+        // Таблиця з усіма товарами
         JTable allProductsTable = new JTable(new Object[0][columns.length], columns);
-
         allProductsTable.setBackground(new Color(232, 243, 255));
         JScrollPane scrollAll = new JScrollPane(allProductsTable);
         JPanel allProductsPanel = new JPanel(new BorderLayout());
@@ -960,12 +957,12 @@ public class NokoGUI extends JFrame {
         JComboBox<String> group2ComboBox = new JComboBox<>();
         fillComboBoxWithGroups(group2ComboBox, groups);
 
-
         JTable groupTable = new JTable(new Object[0][columns.length], columns);
         groupTable.setBackground(new Color(232, 243, 255));
         JScrollPane scrollGroup = new JScrollPane(groupTable);
         JLabel groupTotalLabel = new JLabel("Загальна вартість групи: 0");
 
+        /** Подія від вибору елемента у комбобоксі груп */
         group2ComboBox.addActionListener(e -> {
             String selectedGroupName = (String) group2ComboBox.getSelectedItem();
             if (selectedGroupName != null) {
@@ -984,9 +981,8 @@ public class NokoGUI extends JFrame {
         byGroupsPanel.add(scrollGroup, BorderLayout.CENTER);
         byGroupsPanel.add(groupTotalLabel, BorderLayout.SOUTH);
 
-        /** ДОДАНО */
+        /** Загальна вартість складу */
         double totalPrice = 0.0;
-
         for (ProductGroup ggroup : groups) {
             for (Product product : ggroup.products) {
                 totalPrice += product.price * product.stockQuantity;
@@ -1048,18 +1044,21 @@ public class NokoGUI extends JFrame {
 
     }
 
+    /** Метод для заповнення комбобоксу групами */
     public void fillComboBoxWithGroups(JComboBox<String> comboBox, ArrayList<ProductGroup> groups) {
         for (ProductGroup group : groups) {
             comboBox.addItem(group.name);
         }
     }
 
+    /** Метод для заповнення комбобоксу товарами */
     public void fillComboBoxWithProducts(JComboBox<String> comboBox, ArrayList<Product> products) {
         for (Product product : products) {
             comboBox.addItem(product.name);
         }
     }
 
+    /** Метод для знаходження групи товарів за ім'ям */
     public ProductGroup findGroupByName(String name, ArrayList<ProductGroup> groups) {
         for (ProductGroup group : groups) {
             if (group.name.equalsIgnoreCase(name)) {
@@ -1069,6 +1068,7 @@ public class NokoGUI extends JFrame {
         return null;
     }
 
+    /** Метод для знаходження товару за ім'ям */
     public Product findProductByName(String name, ArrayList<Product> products) {
         for (Product product : products) {
             if (product.name.equalsIgnoreCase(name)) {
@@ -1078,6 +1078,7 @@ public class NokoGUI extends JFrame {
         return null;
     }
 
+    /** Метод для заповнення таблиці з усіма товарами вибраної групи */
     public void fillGroupTable(JTable table, ProductGroup group, JLabel totalLabel) {
         String[] columns = {"Назва", "Виробник", "Ціна", "Кількість", "Опис"};
         List<Product> products = group.products;
@@ -1098,6 +1099,7 @@ public class NokoGUI extends JFrame {
         totalLabel.setText("Загальна вартість групи: " + total);
     }
 
+    /** Метод для заповнення таблиці з усіма товарами */
     public void fillAllProductsTable(JTable table, List<ProductGroup> groups) {
         String[] columns = {"Назва", "Група", "Кількість", "Ціна", "Загальна вартість"};
         List<Object[]> rows = new ArrayList<>();
@@ -1114,11 +1116,11 @@ public class NokoGUI extends JFrame {
                 rows.add(row);
             }
         }
-
         Object[][] data = rows.toArray(new Object[0][]);
         table.setModel(new DefaultTableModel(data, columns));
     }
 
+    /** Перевірка на унікальність імені */
     public boolean isNameUnique(String nameToCheck, ArrayList<ProductGroup> groups) {
         for (ProductGroup group : groups) {
             if (group.name.equalsIgnoreCase(nameToCheck)) {
@@ -1133,6 +1135,7 @@ public class NokoGUI extends JFrame {
         return true;
     }
 
+    /** Метод переведення стрічки у товар */
     public Product StringToProduct(String fileString) {
         String[] parts = fileString.split(";");
 
@@ -1145,6 +1148,7 @@ public class NokoGUI extends JFrame {
         return new Product(name, description, manufacturer, stockQuantity, price);
     }
 
+    /** Метод переведення стрічки у групу товарів */
     public ProductGroup StringToProductGroup(String fileString) {
         String[] parts = fileString.split(";");
 
@@ -1154,6 +1158,7 @@ public class NokoGUI extends JFrame {
         return new ProductGroup(name, description, new ArrayList<Product>());
     }
 
+    /** Метод для завантаження груп з файлу */
     public void loadGroupsFromFile(String filePath) {
         try (BufferedReader reader = new BufferedReader(new FileReader(filePath))) {
             String line;
@@ -1166,6 +1171,7 @@ public class NokoGUI extends JFrame {
         }
     }
 
+    /** Метод для завантаження товарів з файлу */
     public void loadProductsFromFile(String filePath, ProductGroup group) {
         try (BufferedReader reader = new BufferedReader(new FileReader(filePath))) {
             String line;
@@ -1179,7 +1185,7 @@ public class NokoGUI extends JFrame {
         }
     }
 
-
+    /** Запуск */
     public static void main(String[] args) {
         NokoGUI noko = new NokoGUI();
         noko.setVisible(true);
