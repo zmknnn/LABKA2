@@ -7,6 +7,8 @@ import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
 
+/** */
+
 public class NokoGUI extends JFrame {
     private JTextField search;
     private JButton searchButton;
@@ -17,41 +19,8 @@ public class NokoGUI extends JFrame {
 
     static Noko noko;
     static ArrayList<ProductGroup> groups;
-    public static void create() {
-        groups = new ArrayList<ProductGroup>();
-        noko = new Noko(groups);
-        ProductGroup newGroup = new ProductGroup("Канцелярія", "", new ArrayList<Product>());
-        noko.addProductGroup(newGroup);
-        ProductGroup newGroup2 = new ProductGroup("Одяг", "", new ArrayList<Product>());
-        noko.addProductGroup(newGroup2);
-        ProductGroup newGroup3 = new ProductGroup("Квіти", "", new ArrayList<Product>());
-        noko.addProductGroup(newGroup3);
-        Product newProduct = new Product("Сукня вечірня", "Червона сукня з мереживом", "Vogue", 5, 1200.0);
-        newGroup2.addProduct(newProduct);
-        Product product2 = new Product("Штани джинсові", "Класичні сині джинси", "Levis", 10, 1500.0);
-        newGroup2.addProduct(product2);
-        Product product3 = new Product("Сорочка чоловіча", "Біла сорочка класичного крою", "Arber", 7, 900.0);
-        newGroup2.addProduct(product3);
-        Product product4 = new Product("Піджак класичний", "Чорний піджак з вовни", "Vogue", 3, 2000.0);
-        newGroup2.addProduct(product4);
-        Product product5 = new Product("Троянда червона", "Свіжа червона троянда", "Флора", 100, 35.0);
-        newGroup3.addProduct(product5);
-        Product product6 = new Product("Орхідея біла", "Біла орхідея у горщику", "Флора", 20, 250.0);
-        newGroup3.addProduct(product6);
-        Product product7 = new Product("Гвоздика рожева", "Рожева гвоздика, свіжі квіти", "Флора", 80, 30.0);
-        newGroup3.addProduct(product7);
-        Product product8 = new Product("Зошит 96 арк.", "Зошит у клітинку, 96 сторінок", "Школярик", 200, 18.5);
-        newGroup.addProduct(product8);
-        Product product9 = new Product("Ручка гелева", "Гелева ручка синього кольору", "Pilot", 150, 25.0);
-        newGroup.addProduct(product9);
-        Product product10 = new Product("Папка для паперів", "Папка формату А4, пластикова", "Delta", 60, 40.0);
-        newGroup.addProduct(product10);
-        Product product11 = new Product("Блокнот А5", "Блокнот у шкіряному переплеті", "Moleskine", 25, 180.0);
-        newGroup.addProduct(product11);
 
-    }
-
-
+    /** */
     public NokoGUI() {
         try {
             UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
@@ -62,6 +31,7 @@ public class NokoGUI extends JFrame {
             e.printStackTrace();
         }
 
+        /** Завантаження груп та товарів з файлів */
         groups = new ArrayList<ProductGroup>();
         noko = new Noko(groups);
         loadGroupsFromFile("Групи.txt");
@@ -70,12 +40,13 @@ public class NokoGUI extends JFrame {
             loadProductsFromFile(groupFileName, group);
         }
 
-
+        /** Налаштування базового вікна */
         this.setTitle("Noko - склад товарів");
         setSize(800, 650);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setLocationRelativeTo(null);
 
+        /** Панель меню */
         menuPanel = new JPanel();
         menuPanel.setLayout(new BoxLayout(menuPanel, BoxLayout.Y_AXIS));
         menuPanel.setBackground(new Color(198, 221, 255));
@@ -89,6 +60,7 @@ public class NokoGUI extends JFrame {
         // Метод для додавання пустого простору між елементами
         menuPanel.add(Box.createRigidArea(new Dimension(0, 20)));
 
+        /** Кнопки меню */
         JButton searchBtn = new JButton("              Пошук                 ");
         searchBtn.setBackground(new Color(160, 197, 248));
         searchBtn.setForeground(new Color(33, 33, 33));
@@ -126,7 +98,6 @@ public class NokoGUI extends JFrame {
         itemsBtn.setAlignmentX(Component.CENTER_ALIGNMENT);
         importBtn.setAlignmentX(Component.CENTER_ALIGNMENT);
         statisticBtn.setAlignmentX(Component.CENTER_ALIGNMENT);
-
         menuPanel.add(searchBtn);
         menuPanel.add(Box.createRigidArea(new Dimension(0, 10)));
         menuPanel.add(groupsBtn);
@@ -150,6 +121,7 @@ public class NokoGUI extends JFrame {
         // Верхня частина вкладки пошуку
         JPanel textSearchPanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
 
+        // Текстове поле і кнопка
         search = new JTextField(40);
         searchButton = new JButton("\uD83D\uDD0D");
         searchButton.setBackground(new Color(191, 214, 246));
@@ -160,6 +132,7 @@ public class NokoGUI extends JFrame {
         textSearchPanel.add(searchButton);
         searchPanel.add(textSearchPanel);
 
+        // Фільтри за чим здійснювати пошук (використовували JRadioButton)
         JPanel filterPanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
         JLabel filterLabel = new JLabel("Шукати за:");
 
@@ -173,7 +146,7 @@ public class NokoGUI extends JFrame {
         manufacturerBtn.setForeground(new Color(33, 33, 33));
         manufacturerBtn.setOpaque(true);
         manufacturerBtn.setBorderPainted(false);
-
+        // Об'єднали їх в групу
         ButtonGroup group = new ButtonGroup();
         group.add(nameBtn);
         group.add(manufacturerBtn);
@@ -184,6 +157,7 @@ public class NokoGUI extends JFrame {
 
         searchPanel.add(filterPanel);
 
+        // Вивід результатів пошуку
         JTextArea searchResultsArea = new JTextArea(7, 50);
         searchResultsArea.setBackground(new Color(232, 243, 255));
         searchResultsArea.setEditable(false);
@@ -195,6 +169,8 @@ public class NokoGUI extends JFrame {
         searchScrollPane.setVisible(false);
         searchScrollPane.setPreferredSize(new Dimension(500, 500));
         searchPanel.add(searchScrollPane);
+
+        /** Подія для натискання кнопки пошуку */
         searchButton.addActionListener(e -> {
             String query = search.getText().trim();
             if (query.isEmpty()) {
@@ -215,11 +191,9 @@ public class NokoGUI extends JFrame {
 
             searchResultsArea.setText(result);
             searchScrollPane.setVisible(true);
-
             searchPanel.revalidate();
             searchPanel.repaint();
         });
-
 
         /** Вкладка для роботи з групами товарів */
         JPanel groupsPanel = new JPanel();
@@ -232,10 +206,11 @@ public class NokoGUI extends JFrame {
 
         groupsPanel.add(Box.createRigidArea(new Dimension(0, 40)));
 
+        // Панель, де відображатимуться групи
         JPanel groupsAreaPanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
 
+        // JList груп товарів
         DefaultListModel<ProductGroup> groupsModel = new DefaultListModel<>();
-
         JList<ProductGroup> groupsList = new JList<>(groupsModel);
         groupsList.setFont(new Font("Segoe UI", Font.PLAIN, 13));
         groupsList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
@@ -248,18 +223,17 @@ public class NokoGUI extends JFrame {
         JScrollPane groupsScrollPane = new JScrollPane(groupsList);
         groupsScrollPane.setPreferredSize(new Dimension(270, 305));
         groupsAreaPanel.add(groupsScrollPane);
-
+        // Поле для інформації про вибрану групу
         JTextArea groupsTextArea = new JTextArea(15, 20);
         groupsTextArea.setFont(new Font("Segoe UI", Font.PLAIN, 14));
         groupsTextArea.setBackground(new Color(255, 255, 255));
         groupsTextArea.setEditable(false);
 
-
         groupsAreaPanel.add(groupsTextArea);
         groupsPanel.add(groupsAreaPanel);
-
         groupsPanel.add(groupsAreaPanel);
 
+        /** Подія для вибору різних елементів JList */
         groupsList.addListSelectionListener(e -> {
             if (!e.getValueIsAdjusting()) {
                 ProductGroup selectedGroup = groupsList.getSelectedValue();
@@ -269,6 +243,7 @@ public class NokoGUI extends JFrame {
             }
         });
 
+        // Панель з кнопками для роботи з групами
         JPanel groupsButtonPanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
         JButton groupsAddButton = new JButton("Додати");
         groupsAddButton.setBackground(new Color(191, 214, 246));
@@ -277,7 +252,7 @@ public class NokoGUI extends JFrame {
         groupsAddButton.setBorderPainted(false);
         groupsAddButton.setFont(new Font("Segoe UI", Font.PLAIN, 12));
 
-
+        /** Подія від натискання кнопки "Додати" */
         groupsAddButton.addActionListener(e -> {
             JTextField nameField = new JTextField();
             JTextField descriptionField = new JTextField();
@@ -301,11 +276,8 @@ public class NokoGUI extends JFrame {
                 String description = descriptionField.getText();
 
                 if (!name.isEmpty() && !description.isEmpty()) {
-
                     ProductGroup newGroup = new ProductGroup(name, description, new ArrayList<Product>());
-
                     noko.addProductGroup(newGroup);
-
                     groupsModel.addElement(newGroup);
 
                     JOptionPane.showMessageDialog(null, "Групу товарів успішно додано!");
@@ -326,6 +298,7 @@ public class NokoGUI extends JFrame {
         groupsEditButton.setBorderPainted(false);
         groupsEditButton.setFont(new Font("Segoe UI", Font.PLAIN, 12));
 
+        /** Подія від натискання кнопки "Редагувати" */
         groupsEditButton.addActionListener(e -> {
             ProductGroup selectedGroup = groupsList.getSelectedValue();
 
@@ -357,9 +330,7 @@ public class NokoGUI extends JFrame {
 
                 if (!newName.isEmpty() && !newDescription.isEmpty()) {
                     noko.editProductGroup(selectedGroup, newName,newDescription);
-
                     groupsModel.setElementAt(selectedGroup, groupsList.getSelectedIndex());
-
                     JOptionPane.showMessageDialog(null, "Групу товарів успішно відредаговано!");
                 } else {
                     JOptionPane.showMessageDialog(null, "Будь ласка, заповніть усі поля коректно.");
@@ -379,6 +350,7 @@ public class NokoGUI extends JFrame {
         groupsDeleteButton.setBorderPainted(false);
         groupsDeleteButton.setFont(new Font("Segoe UI", Font.PLAIN, 12));
 
+        /** Подія від натискання кнопки "Видалити" */
         groupsDeleteButton.addActionListener(e -> {
             ProductGroup selectedGroup = groupsList.getSelectedValue();
 
@@ -397,7 +369,6 @@ public class NokoGUI extends JFrame {
             if (confirmation == JOptionPane.YES_OPTION) {
                 noko.deleteProductGroup(selectedGroup);
                 groupsModel.removeElement(selectedGroup);
-
                 JOptionPane.showMessageDialog(null, "Групу товарів успішно видалено!");
             }
             groupsTextArea.setText("");
@@ -405,13 +376,11 @@ public class NokoGUI extends JFrame {
             fillComboBoxWithGroups(itemsGroupComboBox, groups);
             importComboBox.removeAllItems();
             fillComboBoxWithGroups(importComboBox, groups);
-
         });
 
         groupsButtonPanel.add(groupsAddButton);
         groupsButtonPanel.add(groupsEditButton);
         groupsButtonPanel.add(groupsDeleteButton);
-
         groupsPanel.add(groupsButtonPanel);
 
 
@@ -425,34 +394,30 @@ public class NokoGUI extends JFrame {
         itemsPanel.add(itemsLabel);
 
         JPanel itemsGroupPanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
-
         JLabel selectItemsGroupLabel = new JLabel("Виберіть групу товарів : ");
 
+        // Комбобокс з групами
         itemsGroupComboBox = new JComboBox<>();
-
-
         fillComboBoxWithGroups(itemsGroupComboBox, groups);
 
         itemsGroupPanel.add(selectItemsGroupLabel);
         itemsGroupPanel.add(itemsGroupComboBox);
-
         itemsPanel.add(Box.createRigidArea(new Dimension(0, 10)));
         itemsPanel.add(itemsGroupPanel);
 
         JPanel itemsProductPanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
 
+        // Відображення товарів (JList)
         DefaultListModel<Product> productsModel = new DefaultListModel<>();
-
         JList<Product> productsList = new JList<>(productsModel);
         productsList.setFont(new Font("Segoe UI", Font.PLAIN, 13));
         productsList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 
-
         JScrollPane scrollPane = new JScrollPane(productsList);
-
         scrollPane.setPreferredSize(new Dimension(275, 300));
         itemsProductPanel.add(scrollPane);
 
+        /** Подія від вибору елемента в комбобоксі груп */
         itemsGroupComboBox.addActionListener(e -> {
             String groupName = (String) itemsGroupComboBox.getSelectedItem();
             ProductGroup selectedGroup = findGroupByName(groupName, groups);
@@ -471,6 +436,7 @@ public class NokoGUI extends JFrame {
         itemsProductPanel.add(itemsTextArea);
         itemsPanel.add(itemsProductPanel);
 
+        /** Подія на вибір елемента в JList товарів */
         productsList.addListSelectionListener(e -> {
             if (!e.getValueIsAdjusting()) {
                 Product selectedProduct = productsList.getSelectedValue();
@@ -488,6 +454,7 @@ public class NokoGUI extends JFrame {
         itemsAddButton.setBorderPainted(false);
         itemsAddButton.setFont(new Font("Segoe UI", Font.PLAIN, 12));
 
+        /** Подія від натискання кнопки "Додати" */
         itemsAddButton.addActionListener(e -> {
             boolean success = false;
 
