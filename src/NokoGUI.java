@@ -254,37 +254,51 @@ public class NokoGUI extends JFrame {
 
         /** Подія від натискання кнопки "Додати" */
         groupsAddButton.addActionListener(e -> {
+            boolean success = false;
+
             JTextField nameField = new JTextField();
             JTextField descriptionField = new JTextField();
 
-            JPanel panel = new JPanel(new GridLayout(0, 1));
-            panel.add(new JLabel("Назва групи товарів:"));
-            panel.add(nameField);
-            panel.add(new JLabel("Опис групи товарів:"));
-            panel.add(descriptionField);
+            while (!success) {
+                JPanel panel = new JPanel(new GridLayout(0, 1));
+                panel.add(new JLabel("Назва групи товарів:"));
+                panel.add(nameField);
+                panel.add(new JLabel("Опис групи товарів:"));
+                panel.add(descriptionField);
 
-            int result = JOptionPane.showConfirmDialog(
-                    null,
-                    panel,
-                    "Додати нову групу товарів",
-                    JOptionPane.OK_CANCEL_OPTION,
-                    JOptionPane.PLAIN_MESSAGE
-            );
+                int result = JOptionPane.showConfirmDialog(
+                        null,
+                        panel,
+                        "Додати нову групу товарів",
+                        JOptionPane.OK_CANCEL_OPTION,
+                        JOptionPane.PLAIN_MESSAGE
+                );
 
-            if (result == JOptionPane.OK_OPTION) {
-                String name = nameField.getText();
-                String description = descriptionField.getText();
-
-                if (!name.isEmpty() && !description.isEmpty()) {
-                    ProductGroup newGroup = new ProductGroup(name, description, new ArrayList<Product>());
-                    noko.addProductGroup(newGroup);
-                    groupsModel.addElement(newGroup);
-
-                    JOptionPane.showMessageDialog(null, "Групу товарів успішно додано!");
-                } else {
-                    JOptionPane.showMessageDialog(null, "Будь ласка, заповніть всі поля коректно.");
+                if (result != JOptionPane.OK_OPTION) {
+                    break;
                 }
+
+                String name = nameField.getText().trim();
+                String description = descriptionField.getText().trim();
+
+                if (name.isEmpty() || description.isEmpty()) {
+                    JOptionPane.showMessageDialog(null, "Будь ласка, заповніть всі поля коректно.");
+                    continue;
+                }
+
+                if (!isNameUnique(name, groups)) {
+                    JOptionPane.showMessageDialog(null, "Група або товар з такою назвою вже існує.");
+                    continue;
+                }
+
+                ProductGroup newGroup = new ProductGroup(name, description, new ArrayList<>());
+                noko.addProductGroup(newGroup);
+                groupsModel.addElement(newGroup);
+
+                JOptionPane.showMessageDialog(null, "Групу товарів успішно додано!");
+                success = true;
             }
+
             itemsGroupComboBox.removeAllItems();
             fillComboBoxWithGroups(itemsGroupComboBox, groups);
             importComboBox.removeAllItems();
@@ -307,35 +321,50 @@ public class NokoGUI extends JFrame {
                 return;
             }
 
-            JTextField nameField = new JTextField(selectedGroup.name);
-            JTextField descriptionField = new JTextField(selectedGroup.description);
+            boolean success = false;
 
-            JPanel panel = new JPanel(new GridLayout(0, 1));
-            panel.add(new JLabel("Назва групи товарів:"));
-            panel.add(nameField);
-            panel.add(new JLabel("Опис групи товарів:"));
-            panel.add(descriptionField);
+            while (!success) {
+                JTextField nameField = new JTextField(selectedGroup.name);
+                JTextField descriptionField = new JTextField(selectedGroup.description);
 
-            int result = JOptionPane.showConfirmDialog(
-                    null,
-                    panel,
-                    "Редагувати групу товарів",
-                    JOptionPane.OK_CANCEL_OPTION,
-                    JOptionPane.PLAIN_MESSAGE
-            );
+                JPanel panel = new JPanel(new GridLayout(0, 1));
+                panel.add(new JLabel("Назва групи товарів:"));
+                panel.add(nameField);
+                panel.add(new JLabel("Опис групи товарів:"));
+                panel.add(descriptionField);
 
-            if (result == JOptionPane.OK_OPTION) {
-                String newName = nameField.getText();
-                String newDescription = descriptionField.getText();
+                int result = JOptionPane.showConfirmDialog(
+                        null,
+                        panel,
+                        "Редагувати групу товарів",
+                        JOptionPane.OK_CANCEL_OPTION,
+                        JOptionPane.PLAIN_MESSAGE
+                );
 
-                if (!newName.isEmpty() && !newDescription.isEmpty()) {
-                    noko.editProductGroup(selectedGroup, newName,newDescription);
-                    groupsModel.setElementAt(selectedGroup, groupsList.getSelectedIndex());
-                    JOptionPane.showMessageDialog(null, "Групу товарів успішно відредаговано!");
-                } else {
-                    JOptionPane.showMessageDialog(null, "Будь ласка, заповніть усі поля коректно.");
+                if (result != JOptionPane.OK_OPTION) {
+                    break;
                 }
+
+                String newName = nameField.getText().trim();
+                String newDescription = descriptionField.getText().trim();
+
+                if (newName.isEmpty() || newDescription.isEmpty()) {
+                    JOptionPane.showMessageDialog(null, "Будь ласка, заповніть усі поля.");
+                    continue;
+                }
+
+                if (!newName.equalsIgnoreCase(selectedGroup.name) && !isNameUnique(newName, groups)) {
+                    JOptionPane.showMessageDialog(null, "Група або товар з такою назвою вже існує.");
+                    continue;
+                }
+
+                noko.editProductGroup(selectedGroup, newName, newDescription);
+                groupsModel.setElementAt(selectedGroup, groupsList.getSelectedIndex());
+
+                JOptionPane.showMessageDialog(null, "Групу товарів успішно відредаговано!");
+                success = true;
             }
+
             groupsTextArea.setText(selectedGroup.display());
             itemsGroupComboBox.removeAllItems();
             fillComboBoxWithGroups(itemsGroupComboBox, groups);
