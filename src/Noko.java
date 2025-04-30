@@ -1,4 +1,5 @@
-/** Основний клас програми
+
+/** Клас зі структурою і методами для основної програми
  *
  * @author Кузь Христина
  * @author Котульська Нонна
@@ -19,6 +20,7 @@ public class Noko {
         this.groups = groups;
     }
 
+    /** Метод для додання групи товарів */
     public void addProductGroup(ProductGroup newGroup) {
         for (ProductGroup group : groups) {
             if (group.name.equalsIgnoreCase(newGroup.name)) {
@@ -45,6 +47,7 @@ public class Noko {
         }
     }
 
+    /** Метод для видалення групи товарів */
     public void deleteProductGroup(ProductGroup group) {
         if (groups.remove(group)) {
             group.clearProducts();
@@ -58,6 +61,7 @@ public class Noko {
 
     }
 
+    /** Метод для редагування товарів */
     public void editProductGroup(ProductGroup group, String newName, String newDescription) {
         String oldName = group.name;
         String oldFileName = oldName + ".txt";
@@ -99,7 +103,7 @@ public class Noko {
         }
     }
 
-
+    /** Метод для знаходження товару за назвою (початком) */
     public static String findProductByNamePartial(String query) {
         boolean productFound = false;
         StringBuilder result = new StringBuilder("");
@@ -133,6 +137,7 @@ public class Noko {
         return result.toString();
     }
 
+    /** Метод для знаходження товару за виробником (початком) */
     public static String findProductByManufacturerPartial(String query) {
         boolean productFound = false;
         StringBuilder result = new StringBuilder("");
@@ -167,25 +172,6 @@ public class Noko {
         return result.toString();
     }
 
-    public void findProductByPrice(double price) {
-        boolean productFound = false;
-        System.out.println("Знайдені товари за ціною: ");
-        for (ProductGroup group : groups) {
-            for (Product product : group.products) {
-                if (product.price == price) {
-                    System.out.println(product.name + " - " + product.description + "\n" +
-                            ", Виробник: " + product.manufacturer + "\n" +
-                            ", Кількість на складі: " + product.stockQuantity + "\n" +
-                            ", Ціна: " + product.price + "\n" + " ");
-                    productFound = true;
-                }
-            }
-        }
-        if (!productFound) {
-            System.out.println("Товарів за ціною не знайдено.");
-        }
-    }
-
 }
 
 /** Клас, який представляє групу товарів */
@@ -200,16 +186,17 @@ class ProductGroup {
         this.description = description;
     }
 
+    /** Для запису групи у файл */
     public String fileToString(){
         return name + ";" + description;
     }
-
 
     /** Метод для очищення товарів у групі */
     public void clearProducts() {
         products.clear();
     }
 
+    /** Метод для додання товару */
     public void addProduct(Product newProduct) {
         for (Product product : products) {
             if (product.name.equalsIgnoreCase(newProduct.name)) {
@@ -228,6 +215,7 @@ class ProductGroup {
         }
     }
 
+    /** Метод для видалення товару */
     public void deleteProduct(Product product) {
         products.remove(product);
 
@@ -250,11 +238,12 @@ class ProductGroup {
         }
     }
 
-
+    /** Метод, що повертає назву групи */
     public String toString() {
         return name;
     }
 
+    /** Для виводу інформації про групу */
     public String display() {
         return "Назва: " + name + "\n" + "Опис: " + description;
     }
@@ -277,27 +266,34 @@ class Product {
         this.price = price;
     }
 
+    /** Повертає просто назву товару */
     public String toString(){
         return name;
     }
 
+    /** Виводить інформацію про товар */
     public String display() {
         return "Назва: " + name + "\n" + "Опис: " + description + "\n" + "Виробник: " + manufacturer+ "\n" + "Кількість: " + stockQuantity + "\n" + "Ціна: " + price ;
     }
 
+    /** Для списання товару */
     public int writeOff(int number){
         this.stockQuantity = stockQuantity - number;
         return stockQuantity;
     }
 
+    /** Для надходження товару */
     public int writeIn(int number){
         this.stockQuantity = stockQuantity + number;
         return stockQuantity;
     }
+
+    /** Для записування товару у файл */
     public String fileToString(){
         return name + ";" + description + ";" + manufacturer + ";" + stockQuantity + ";" + price ;
     }
 
+    /** Для редагування товару */
     public void edit(ProductGroup groupName, String newName, String newDescription, String newManufacturer, int newStockQuantity, double newPrice) {
         String oldName = this.name;
         this.name = newName;
