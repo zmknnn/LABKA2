@@ -53,12 +53,28 @@ public class Noko {
             group.clearProducts();
 
             File groupFile = new File(group.name + ".txt");
-
             if (groupFile.exists()) {
                 groupFile.delete();
             }
-        }
 
+            File file = new File("Групи.txt");
+            if (file.exists()) {
+                try {
+                    List<String> allLines = Files.readAllLines(file.toPath());
+                    List<String> updatedLines = new ArrayList<>();
+
+                    for (String line : allLines) {
+                        if (!line.trim().startsWith(group.name + ";")) {
+                            updatedLines.add(line);
+                        }
+                    }
+
+                    Files.write(file.toPath(), updatedLines);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
     }
 
     /** Метод для редагування товарів */

@@ -16,6 +16,7 @@ public class NokoGUI extends JFrame {
     private JLabel menuLabel;
     private CardLayout cardLayout;
     private JComboBox<String> itemsGroupComboBox,  importComboBox , importProductComboBox;
+    private JTable allProductsTable;
 
     static Noko noko;
     static ArrayList<ProductGroup> groups;
@@ -228,6 +229,8 @@ public class NokoGUI extends JFrame {
         groupsTextArea.setFont(new Font("Segoe UI", Font.PLAIN, 14));
         groupsTextArea.setBackground(new Color(255, 255, 255));
         groupsTextArea.setEditable(false);
+        groupsTextArea.setLineWrap(true);
+        groupsTextArea.setWrapStyleWord(true);
 
         groupsAreaPanel.add(groupsTextArea);
         groupsPanel.add(groupsAreaPanel);
@@ -303,6 +306,7 @@ public class NokoGUI extends JFrame {
             fillComboBoxWithGroups(itemsGroupComboBox, groups);
             importComboBox.removeAllItems();
             fillComboBoxWithGroups(importComboBox, groups);
+            fillAllProductsTable(allProductsTable, groups);
         });
 
         JButton groupsEditButton = new JButton("Редагувати");
@@ -370,6 +374,7 @@ public class NokoGUI extends JFrame {
             fillComboBoxWithGroups(itemsGroupComboBox, groups);
             importComboBox.removeAllItems();
             fillComboBoxWithGroups(importComboBox, groups);
+            fillAllProductsTable(allProductsTable, groups);
         });
 
         JButton groupsDeleteButton = new JButton("Видалити");
@@ -405,6 +410,7 @@ public class NokoGUI extends JFrame {
             fillComboBoxWithGroups(itemsGroupComboBox, groups);
             importComboBox.removeAllItems();
             fillComboBoxWithGroups(importComboBox, groups);
+            fillAllProductsTable(allProductsTable, groups);
         });
 
         groupsButtonPanel.add(groupsAddButton);
@@ -460,6 +466,8 @@ public class NokoGUI extends JFrame {
 
         JTextArea itemsTextArea = new JTextArea(17, 20);
         itemsTextArea.setEditable(false);
+        itemsTextArea.setLineWrap(true);
+        itemsTextArea.setWrapStyleWord(true);
         itemsTextArea.setFont(new Font("Segoe UI", Font.PLAIN, 13));
 
         itemsProductPanel.add(itemsTextArea);
@@ -563,6 +571,7 @@ public class NokoGUI extends JFrame {
                     JOptionPane.showMessageDialog(null, "Кількість та ціна мають бути числовими значеннями.");
                 }
             }
+            fillAllProductsTable(allProductsTable, groups);
         });
 
         JButton itemsEditButton = new JButton("Редагувати");
@@ -654,6 +663,7 @@ public class NokoGUI extends JFrame {
                     JOptionPane.showMessageDialog(null, "Кількість та ціна мають бути числовими значеннями.");
                 }
             }
+            fillAllProductsTable(allProductsTable, groups);
         });
 
         JButton itemsDeleteButton = new JButton("Видалити");
@@ -694,6 +704,7 @@ public class NokoGUI extends JFrame {
             } else {
                 JOptionPane.showMessageDialog(null, "Будь ласка, виберіть товар для видалення.");
             }
+            fillAllProductsTable(allProductsTable, groups);
         });
 
         itemsButtonPanel.add(itemsAddButton);
@@ -754,6 +765,7 @@ public class NokoGUI extends JFrame {
         JTextArea informationArea = new JTextArea(28, 35);
         informationArea.setEditable(false);
         informationArea.setLineWrap(true);
+        informationArea.setWrapStyleWord(true);
         informationArea.setFont(new Font("Segoe UI", Font.PLAIN, 14));
         informationPanel.add(informationArea);
         importPanel.add(informationPanel);
@@ -829,6 +841,7 @@ public class NokoGUI extends JFrame {
                     JOptionPane.showMessageDialog(null, "Будь ласка, введіть коректну кількість.");
                 }
             }
+            fillAllProductsTable(allProductsTable, groups);
         });
 
         choice3Panel.add(writeInButton);
@@ -897,6 +910,7 @@ public class NokoGUI extends JFrame {
                 selectedProduct.writeOff(selectedValue);
             }
             informationArea.setText(selectedProduct.display());
+            fillAllProductsTable(allProductsTable, groups);
         });
 
         choice3Panel.add(writeOffButton);
@@ -944,7 +958,7 @@ public class NokoGUI extends JFrame {
         String[] columns = {"Назва", "Група", "Кількість", "Ціна", "Загальна вартість"};
 
         // Таблиця з усіма товарами
-        JTable allProductsTable = new JTable(new Object[0][columns.length], columns);
+        allProductsTable = new JTable(new Object[0][columns.length], columns);
         allProductsTable.setBackground(new Color(232, 243, 255));
         JScrollPane scrollAll = new JScrollPane(allProductsTable);
         JPanel allProductsPanel = new JPanel(new BorderLayout());
